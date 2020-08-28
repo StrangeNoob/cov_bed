@@ -1,5 +1,7 @@
 import 'dart:async';
-import 'package:cov_bed/screens/landingscreen.dart';
+import 'package:cov_bed/screens/homepage.dart';
+import 'package:cov_bed/screens/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,10 +23,18 @@ class SplashScreenState extends State<AnimatedSplashScreen>
   }
 
   void navigationPage() async {
-    Navigator.pushReplacement(
+    var user = FirebaseAuth.instance.currentUser();
+    if(user != null){
+      Navigator.pushReplacement(
         context,
         new MaterialPageRoute(
-            builder: (BuildContext context) => LandingPage()));
+            builder: (BuildContext context) => MyHomePage()));
+    }else{
+      Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+            builder: (BuildContext context) => LoginScreen()));
+    }
   }
 
   @override

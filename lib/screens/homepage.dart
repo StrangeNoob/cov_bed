@@ -1,8 +1,9 @@
-
-import 'package:cov_bed/model/patients.dart';
-import 'package:cov_bed/screens/patient.dart';
+import 'package:cov_bed/screens/bedscreen.dart';
+import 'package:cov_bed/screens/permissions.dart';
+import 'package:cov_bed/screens/profile.dart';
+import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cov_bed/utlis/constants.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -12,117 +13,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Patient> patients = [
-    Patient(
-      id: "1234",
-      name: "Prateek Mohanty",
-      arrivaldate: "2020-07-21",
-      temp: 36,
-      pH: 7.2,
-      spo: 98.0,
-      heartrate: 68,
-      lastValue: 45,
-    ),
-    Patient(
-      id: "1235",
-      name: "Sai Mohanty",
-      arrivaldate: "2020-07-20",
-      temp: 36,
-      pH: 7.2,
-      spo: 98.0,
-      heartrate: 68,
-      lastValue: 45,
-    ),
-    Patient(
-      id: "1236",
-      name: "Animesh Kar",
-      arrivaldate: "2020-07-13",
-      temp: 36,
-      pH: 7.2,
-      spo: 98.0,
-      heartrate: 68,
-      lastValue: 45,
-    ),
-    Patient(
-      id: "1237",
-      name: "Prateek Mohanty",
-      arrivaldate: "2020-07-20",
-      temp: 36,
-      pH: 7.2,
-      spo: 98.0,
-      heartrate: 68,
-      lastValue: 45,
-    ),
-  ];
-
+  
+  Widget _child = BedScreen();
   @override
   Widget build(BuildContext context) {
-    var screenHeight = MediaQuery.of(context).size.height;
-    var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text("DashBoard"),
       ),
-      body: Container(
-          height: screenHeight,
-          width: screenWidth,
-          color: Colors.white,
-          padding: EdgeInsets.fromLTRB(
-              screenWidth * 0.12, 30, screenWidth * 0.12, 0),
-          child: Column(
-            children: <Widget>[
-              Center(
-                child: Text("List of Beds"),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: patients.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    height: 80,
-                    width: double.infinity,
-                    child: new Card(
-                      elevation: 8.0,
-                      margin: new EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 6.0),
-                      child: Container(
-                        child: ListTile(
-                          leading: Container(
-                            padding: EdgeInsets.only(right: 12.0),
-                            decoration: new BoxDecoration(
-                              border: new Border(
-                                right: new BorderSide(
-                                    width: 1.0, color: Colors.black),
-                              ),
-                            ),
-                            child: new SvgPicture.asset(
-                              "assets/icons/patient.svg",
-                              color: Colors.blue,
-                              width: 25.0,
-                            ),
-                          ),
-                          title: new Text(
-                            "Bed No $index",
-                            style: TextStyle(
-                                fontFamily: 'B612', color: Colors.black),
-                          ),
-                          trailing: RaisedButton.icon(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: 
-                                (context)=> PatientPage(patient: patients[index],)));
-                              },
-                              icon: Icon(Icons.arrow_forward_ios),
-                              label: Text("")),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              )
-            ],
+      body: _child,
+      bottomNavigationBar: FluidNavBar(
+          icons: [
+            FluidNavBarIcon(
+                iconPath: "assets/icons/dashboard.svg",
+                extras: {"label": "DashBoard"}),
+            FluidNavBarIcon(
+                iconPath: "assets/icons/leaderboard.svg",
+                extras: {"label": "LeaderBoard"}),
+            FluidNavBarIcon(
+                iconPath: "assets/icons/account_circle.svg",
+                extras: {"label": "Profile"}),
+          ],
+          onChange: _handleNavigationChange,
+          style: FluidNavBarStyle(
+              barBackgroundColor: primaryColor,
+              iconBackgroundColor: primaryColor,
+              iconSelectedForegroundColor: Colors.white,
+              iconUnselectedForegroundColor: Colors.white),
+          scaleFactor: 2.0,
+          itemBuilder: (icon, item) => Semantics(
+            label: icon.extras["label"],
+            child: item,
           ),
-        ),
+      ),
     );
+  }
+
+  void _handleNavigationChange(int index) {
+    setState(() {
+      switch (index) {
+        case 0:
+          _child = BedScreen();
+          break;
+        case 1:
+          _child = Permission();
+          break;
+        case 2:
+          _child = Profile();
+          break;
+      }
+      _child = AnimatedSwitcher(
+        switchInCurve: Curves.easeOut,
+        switchOutCurve: Curves.easeIn,
+        duration: Duration(milliseconds: 200),
+        child: _child,
+      );
+    });
   }
 }

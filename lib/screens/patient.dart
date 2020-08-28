@@ -136,13 +136,6 @@ class _PatientPageState extends State<PatientPage> {
                         width: screenWidth * 0.35,
                       ),
                       SizedBox(height: screenWidth * 0.03),
-                      // SmallCard(
-                      //   iconSvg: "assets/icons/heartline.svg",
-                      //   unit: "View Details",
-                      //   value: " ",
-                      //   height: screenHeight * 0.15,
-                      //   width: screenWidth * 0.35,
-                      // )
                     ],
                   ),
                   SizedBox(width: screenWidth * 0.03),
