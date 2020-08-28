@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 class AnimatedSplashScreen extends StatefulWidget {
   @override
   SplashScreenState createState() => new SplashScreenState();
@@ -23,17 +22,17 @@ class SplashScreenState extends State<AnimatedSplashScreen>
   }
 
   void navigationPage() async {
-    var user = FirebaseAuth.instance.currentUser();
-    if(user != null){
+    var user = await FirebaseAuth.instance.currentUser();
+    if (user != null) {
       Navigator.pushReplacement(
-        context,
-        new MaterialPageRoute(
-            builder: (BuildContext context) => MyHomePage()));
-    }else{
+          context,
+          new MaterialPageRoute(
+              builder: (BuildContext context) => MyHomePage()));
+    } else {
       Navigator.pushReplacement(
-        context,
-        new MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen()));
+          context,
+          new MaterialPageRoute(
+              builder: (BuildContext context) => LoginScreen()));
     }
   }
 
